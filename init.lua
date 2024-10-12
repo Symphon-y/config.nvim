@@ -223,6 +223,11 @@ require('lazy').setup({
           F10 = '<F10>',
           F11 = '<F11>',
           F12 = '<F12>',
+          '<leader>?',
+          function()
+            require('which-key').show { global = true }
+          end,
+          desc = 'Buffer Local Keymaps (which-key)',
         },
       },
 
