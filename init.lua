@@ -329,11 +329,33 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sf', builtin.find_files, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
-      vim.keymap.set('n', '<leader>sg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+      vim.keymap.set('n', '<leader>st/', function()
+        -- Prompt the user to enter a file extension
+        local file_extension = vim.fn.input 'File extension to search (e.g., *.js): '
+
+        -- Run live_grep with the user-specified file extension
+        builtin.live_grep {
+          prompt_title = 'Live Grep by File Type',
+          shorten_path = true,
+          additional_args = function()
+            return { '--glob', file_extension }
+          end,
+        }
+      end, { desc = '[S]earch by File [T]ype' })
+
+      vim.keymap.set('n', '<leader>sg', function()
+        builtin.live_grep {
+          shorten_path = true,
+          additional_args = function()
+            return { '--glob', '!node_modules/*', '--glob', '!.git/*', '!*.log', '!*.min.js' }
+          end,
+          prompt_title = 'Live Grep (Filtered)',
+        }
+      end, { desc = '[S]earch by [G]rep (Filtered)' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
@@ -348,6 +370,7 @@ require('lazy').setup({
       --  See `:help telescope.builtin.live_grep()` for information about particular keys
       vim.keymap.set('n', '<leader>s/', function()
         builtin.live_grep {
+          shorten_path = true,
           grep_open_files = true,
           prompt_title = 'Live Grep in Open Files',
         }
