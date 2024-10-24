@@ -672,6 +672,9 @@ require('lazy').setup({
     },
     opts = {
       notify_on_error = false,
+      format = {
+        timeout_ms = 10000,
+      },
       format_on_save = function(bufnr)
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
