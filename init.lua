@@ -691,6 +691,7 @@ require('lazy').setup({
           lsp_format = lsp_format_opt,
         }
       end,
+      timeout_ms = 10000,
       formatters_by_ft = {
         -- Conform can also run multiple formatters sequentially
         -- python = { "isort", "black" },
