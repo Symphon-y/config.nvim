@@ -8,6 +8,7 @@ vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = false
 
 -- [[ Setting options ]]
+vim.opt.mouse = 'a'
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
@@ -19,7 +20,6 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
-vim.opt.mouse = 'a'
 
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
@@ -103,6 +103,12 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+-- Editing Commands
+-- Move a selecte line down
+vim.keymap.set('v', '<A-k>', ":m '>+1<CR>gv=gv")
+-- Move a selected line up
+vim.keymap.set('v', '<A-j>', ":m '<-2<CR>gv=gv")
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
