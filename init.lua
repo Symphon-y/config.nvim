@@ -203,16 +203,20 @@ require('lazy').setup({
 
       -- [[ Configure Telescope ]]
       -- See `:help telescope` and `:help telescope.setup()`
+      local actions = require 'telescope.actions'
       require('telescope').setup {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
+
         defaults = {
           file_ignore_patterns = { 'node_modules' },
           mappings = {
             i = {
               ['<c-enter>'] = 'to_fuzzy_refine',
               ['<C-h>'] = 'which_key', -- Show keybindings with Ctrl+h in insert mode [1, 3, 4]
+              ['<C-v>'] = actions.select_vertical, -- Open file in vertical split
+              ['<C-x>'] = actions.select_horizontal, -- Open file in horizontal split
             },
           },
         },
