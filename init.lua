@@ -214,9 +214,9 @@ require('lazy').setup({
           mappings = {
             i = {
               ['<c-enter>'] = 'to_fuzzy_refine',
-              ['<C-h>'] = 'which_key', -- Show keybindings with Ctrl+h in insert mode [1, 3, 4]
-              ['<C-v>'] = actions.select_vertical, -- Open file in vertical split
-              ['<C-x>'] = actions.select_horizontal, -- Open file in horizontal split
+              ['<C-k>'] = 'which_key', -- Show keybindings with Ctrl+h in insert mode [1, 3, 4]
+              ['<C-s>'] = actions.select_vertical, -- Open file in vertical split
+              ['<C-h>'] = actions.select_horizontal, -- Open file in horizontal split
             },
           },
         },
