@@ -19,9 +19,7 @@ require 'keymaps'
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
-  callback = function()
-    vim.highlight.on_yank()
-  end,
+  callback = function() vim.highlight.on_yank() end,
 })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
@@ -30,9 +28,7 @@ local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
   local out = vim.fn.system { 'git', 'clone', '--filter=blob:none', '--branch=stable', lazyrepo, lazypath }
-  if vim.v.shell_error ~= 0 then
-    error('Error cloning lazy.nvim:\n' .. out)
-  end
+  if vim.v.shell_error ~= 0 then error('Error cloning lazy.nvim:\n' .. out) end
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
@@ -161,13 +157,9 @@ require('lazy').setup({
         -- Show files and directories that start with "."
         show_hidden = true,
         -- This function defines what is considered a "hidden" file
-        is_hidden_file = function(name, bufnr)
-          return vim.startswith(name, '.')
-        end,
+        is_hidden_file = function(name, bufnr) return vim.startswith(name, '.') end,
         -- This function defines what will never be shown, even when `show_hidden` is set
-        is_always_hidden = function(name, bufnr)
-          return false
-        end,
+        is_always_hidden = function(name, bufnr) return false end,
         -- Sort file names in a more intuitive order for humans. Is less performant,
         -- so you may want to set to false if you work with large directories.
         natural_order = true,
@@ -185,15 +177,9 @@ require('lazy').setup({
       -- EXPERIMENTAL support for performing file operations with git
       git = {
         -- Return true to automatically git add/mv/rm files
-        add = function(path)
-          return false
-        end,
-        mv = function(src_path, dest_path)
-          return false
-        end,
-        rm = function(path)
-          return false
-        end,
+        add = function(path) return false end,
+        mv = function(src_path, dest_path) return false end,
+        rm = function(path) return false end,
       },
       -- Configuration for the floating window in oil.open_float
       float = {
@@ -211,9 +197,7 @@ require('lazy').setup({
         preview_split = 'auto',
         -- This is the config that will be passed to nvim_open_win.
         -- Change values here to customize the layout
-        override = function(conf)
-          return conf
-        end,
+        override = function(conf) return conf end,
       },
       -- Configuration for the actions floating preview window
       preview = {
@@ -321,9 +305,7 @@ require('lazy').setup({
           F11 = '<F11>',
           F12 = '<F12>',
           '<leader>?',
-          function()
-            require('which-key').show { global = true }
-          end,
+          function() require('which-key').show { global = true } end,
           desc = 'Buffer Local Keymaps (which-key)',
         },
       },
@@ -363,9 +345,7 @@ require('lazy').setup({
 
         -- `cond` is a condition used to determine whether this plugin should be
         -- installed and loaded.
-        cond = function()
-          return vim.fn.executable 'make' == 1
-        end,
+        cond = function() return vim.fn.executable 'make' == 1 end,
       },
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
@@ -442,18 +422,14 @@ require('lazy').setup({
         builtin.live_grep {
           prompt_title = 'Live Grep by File Type',
           shorten_path = true,
-          additional_args = function()
-            return { '--glob', file_extension }
-          end,
+          additional_args = function() return { '--glob', file_extension } end,
         }
       end, { desc = '[S]earch by File [T]ype' })
 
       vim.keymap.set('n', '<leader>sg', function()
         builtin.live_grep {
           shorten_path = true,
-          additional_args = function()
-            return { '--glob', '!node_modules/*', '--glob', '!.git/*', '!*.log', '!*.min.js' }
-          end,
+          additional_args = function() return { '--glob', '!node_modules/*', '--glob', '!.git/*', '!*.log', '!*.min.js' } end,
           prompt_title = 'Live Grep (Filtered)',
         }
       end, { desc = '[S]earch by [G]rep (Filtered)' })
@@ -469,18 +445,21 @@ require('lazy').setup({
 
       -- It's also possible to pass additional configuration options.
       --  See `:help telescope.builtin.live_grep()` for information about particular keys
-      vim.keymap.set('n', '<leader>s/', function()
-        builtin.live_grep {
-          shorten_path = true,
-          grep_open_files = true,
-          prompt_title = 'Live Grep in Open Files',
-        }
-      end, { desc = '[S]earch [/] in Open Files' })
+      vim.keymap.set(
+        'n',
+        '<leader>s/',
+        function()
+          builtin.live_grep {
+            shorten_path = true,
+            grep_open_files = true,
+            prompt_title = 'Live Grep in Open Files',
+          }
+        end,
+        { desc = '[S]earch [/] in Open Files' }
+      )
 
       -- Shortcut for searching your Neovim configuration files
-      vim.keymap.set('n', '<leader>sn', function()
-        builtin.find_files { cwd = vim.fn.stdpath 'config' }
-      end, { desc = '[S]earch [N]eovim files' })
+      vim.keymap.set('n', '<leader>sn', function() builtin.find_files { cwd = vim.fn.stdpath 'config' } end, { desc = '[S]earch [N]eovim files' })
     end,
   },
   {
@@ -494,33 +473,17 @@ require('lazy').setup({
       harpoon:setup()
       -- REQUIRED
 
-      vim.keymap.set('n', ';', function()
-        harpoon:list():add()
-      end)
-      vim.keymap.set('n', '<C-h>', function()
-        harpoon.ui:toggle_quick_menu(harpoon:list())
-      end)
+      vim.keymap.set('n', ';', function() harpoon:list():add() end)
+      vim.keymap.set('n', '<C-h>', function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
 
-      vim.keymap.set('n', '<C-j>', function()
-        harpoon:list():select(1)
-      end)
-      vim.keymap.set('n', '<C-k>', function()
-        harpoon:list():select(2)
-      end)
-      vim.keymap.set('n', '<C-n>', function()
-        harpoon:list():select(3)
-      end)
-      vim.keymap.set('n', '<C-;>', function()
-        harpoon:list():select(4)
-      end)
+      vim.keymap.set('n', '<C-j>', function() harpoon:list():select(1) end)
+      vim.keymap.set('n', '<C-k>', function() harpoon:list():select(2) end)
+      vim.keymap.set('n', '<C-n>', function() harpoon:list():select(3) end)
+      vim.keymap.set('n', '<C-;>', function() harpoon:list():select(4) end)
 
       -- Toggle previous & next buffers stored within Harpoon list
-      vim.keymap.set('n', '<C-S-P>', function()
-        harpoon:list():prev()
-      end)
-      vim.keymap.set('n', '<C-S-N>', function()
-        harpoon:list():next()
-      end)
+      vim.keymap.set('n', '<C-S-P>', function() harpoon:list():prev() end)
+      vim.keymap.set('n', '<C-S-N>', function() harpoon:list():next() end)
     end,
   },
   -- LSP Plugins
@@ -676,9 +639,7 @@ require('lazy').setup({
           --
           -- This may be unwanted, since they displace some of your code
           if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
-            map('<leader>th', function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
-            end, '[T]oggle Inlay [H]ints')
+            map('<leader>th', function() vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf }) end, '[T]oggle Inlay [H]ints')
           end
         end,
       })
@@ -773,9 +734,7 @@ require('lazy').setup({
     keys = {
       {
         '<leader>f',
-        function()
-          require('conform').format { async = true, lsp_format = 'fallback' }
-        end,
+        function() require('conform').format { async = true, lsp_format = 'fallback' } end,
         mode = '',
         desc = '[F]ormat buffer',
       },
@@ -834,9 +793,7 @@ require('lazy').setup({
           -- Build Step is needed for regex support in snippets.
           -- This step is not supported in many windows environments.
           -- Remove the below condition to re-enable on windows.
-          if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
-            return
-          end
+          if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then return end
           return 'make install_jsregexp'
         end)(),
         dependencies = {
@@ -867,9 +824,7 @@ require('lazy').setup({
 
       cmp.setup {
         snippet = {
-          expand = function(args)
-            luasnip.lsp_expand(args.body)
-          end,
+          expand = function(args) luasnip.lsp_expand(args.body) end,
         },
         completion = { completeopt = 'menu,menuone,noinsert' },
 
@@ -912,14 +867,10 @@ require('lazy').setup({
           -- <c-l> will move you to the right of each of the expansion locations.
           -- <c-h> is similar, except moving you backwards.
           ['<C-l>'] = cmp.mapping(function()
-            if luasnip.expand_or_locally_jumpable() then
-              luasnip.expand_or_jump()
-            end
+            if luasnip.expand_or_locally_jumpable() then luasnip.expand_or_jump() end
           end, { 'i', 's' }),
           ['<C-h>'] = cmp.mapping(function()
-            if luasnip.locally_jumpable(-1) then
-              luasnip.jump(-1)
-            end
+            if luasnip.locally_jumpable(-1) then luasnip.jump(-1) end
           end, { 'i', 's' }),
 
           -- For more advanced Luasnip keymaps (e.g. selecting choice nodes, expansion) see:
@@ -1029,9 +980,7 @@ require('lazy').setup({
       -- default behavior. For example, here we set the section for
       -- cursor location to LINE:COLUMN
       ---@diagnostic disable-next-line: duplicate-set-field
-      statusline.section_location = function()
-        return '%2l:%-2v'
-      end
+      statusline.section_location = function() return '%2l:%-2v' end
 
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
@@ -1040,9 +989,7 @@ require('lazy').setup({
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
-    config = function()
-      require('nvim-treesitter').setup()
-    end,
+    config = function() require('nvim-treesitter').setup() end,
     -- There are additional nvim-treesitter modules that you can use to interact
     -- with nvim-treesitter. You should go explore a few and see what interests you:
     --
@@ -1076,7 +1023,7 @@ require('lazy').setup({
 }, {
   -- Where lazy.nvim looks for `dev = true` plugins. Defaults to ~/projects on
   -- POSIX which doesn't match Windows `~/Projects`, so set it explicitly.
-  dev = { path = vim.fn.expand('~/Projects') },
+  dev = { path = vim.fn.expand '~/Projects' },
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
     -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
