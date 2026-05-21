@@ -954,6 +954,46 @@ require('lazy').setup({
 
       -- You can configure highlights by doing something like:
       vim.cmd.hi 'Comment gui=none'
+
+      -- Make split borders bright cyan and dim inactive splits so the
+      -- focused window pops. Re-applied on ColorScheme so it survives
+      -- a theme swap.
+      local function apply_split_highlights()
+        vim.api.nvim_set_hl(0, 'WinSeparator', { fg = '#7dcfff', bg = 'NONE', bold = true })
+        vim.api.nvim_set_hl(0, 'NormalNC', { bg = '#16161e' })
+        -- Cyan horizontal divider drawn via winbar on stacked splits.
+        vim.api.nvim_set_hl(0, 'HorizSplitBorder', { fg = '#7dcfff', bg = 'NONE', bold = true })
+      end
+      apply_split_highlights()
+      vim.api.nvim_create_autocmd('ColorScheme', {
+        group = vim.api.nvim_create_augroup('split-visibility', { clear = true }),
+        callback = apply_split_highlights,
+      })
+
+      -- A statusline is the divider between stacked splits, so to keep the
+      -- statusline content AND get a cyan horizontal rule we add a one-line
+      -- winbar — but only on windows that actually have another window
+      -- directly above them. Windows at the very top of the editor area get
+      -- no winbar so we don't draw a stray line under the tabline.
+      local function refresh_winbars()
+        local tabline_visible = vim.o.showtabline == 2 or (vim.o.showtabline == 1 and #vim.api.nvim_list_tabpages() > 1)
+        local top_row = tabline_visible and 2 or 1
+        for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+          if vim.api.nvim_win_get_config(win).relative == '' then
+            local row = vim.fn.win_screenpos(win)[1]
+            if row > top_row then
+              vim.wo[win].winbar = '%#HorizSplitBorder#' .. string.rep('─', 500)
+            else
+              vim.wo[win].winbar = ''
+            end
+          end
+        end
+      end
+      vim.api.nvim_create_autocmd({ 'WinNew', 'WinClosed', 'WinResized', 'VimResized', 'TabEnter' }, {
+        group = vim.api.nvim_create_augroup('horiz-split-border', { clear = true }),
+        callback = vim.schedule_wrap(refresh_winbars),
+      })
+      vim.schedule(refresh_winbars)
     end,
   },
 
