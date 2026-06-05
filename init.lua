@@ -452,7 +452,7 @@ require('lazy').setup({
         builtin.live_grep {
           shorten_path = true,
           additional_args = function()
-            return { '--glob', '!node_modules/*', '--glob', '!.git/*', '!*.log', '!*.min.js' }
+            return { '--glob', '!node_modules/*', '--glob', '!.git/*', '--glob', '!*.log', '--glob', '!*.min.js' }
           end,
           prompt_title = 'Live Grep (Filtered)',
         }
@@ -496,6 +496,9 @@ require('lazy').setup({
 
       vim.keymap.set('n', ';', function()
         harpoon:list():add()
+      end)
+      vim.keymap.set('n', '<leader>r', function()
+        harpoon:list():remove()
       end)
       vim.keymap.set('n', '<C-h>', function()
         harpoon.ui:toggle_quick_menu(harpoon:list())
