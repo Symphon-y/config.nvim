@@ -47,6 +47,20 @@ vim.opt.timeoutlen = 300
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 
+-- Box-drawing chars (U+2500-257F) for split borders. Cross-terminal safe:
+-- no Nerd Font required, renders on Terminal.app, iTerm2, kitty, alacritty,
+-- wezterm, Windows Terminal, gnome-terminal, konsole, etc.
+vim.opt.fillchars:append {
+  vert = '│',
+  horiz = '─',
+  horizup = '┴',
+  horizdown = '┬',
+  vertleft = '┤',
+  vertright = '├',
+  verthoriz = '┼',
+  eob = ' ',
+}
+
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
