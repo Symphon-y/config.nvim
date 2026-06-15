@@ -3,7 +3,7 @@ return {
   {
     'Symphon-y/gitdiff.nvim',
     name = 'gitdiff-nvim',
-    dir = dev.path 'gitdiff-nvim',
+    dir = dev.path 'Tools/nvim/gitdiff.nvim',
     cmd = {
       'GitDiffStart',
       'GitDiffStop',
