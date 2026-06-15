@@ -999,14 +999,28 @@ require('lazy').setup({
   },
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
-    config = function() require('nvim-treesitter').setup() end,
-    -- There are additional nvim-treesitter modules that you can use to interact
-    -- with nvim-treesitter. You should go explore a few and see what interests you:
-    --
-    --    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
-    --    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
-    --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
+    branch = 'main',
+    build = function()
+      require('nvim-treesitter').update()
+    end,
+    config = function()
+      if vim.fn.has('win32') == 1 then
+        local zigcc = vim.fn.stdpath('data') .. '\\zigcc.cmd'
+        -- Always rewrite so the target remapping stays current.
+        vim.fn.writefile({
+          '@echo off',
+          'setlocal enabledelayedexpansion',
+          'set ARGS=%*',
+          'set ARGS=!ARGS:x86_64-pc-windows-msvc=x86_64-windows-gnu!',
+          'zig cc !ARGS!',
+        }, zigcc)
+        vim.env.CC = zigcc
+      end
+      require('nvim-treesitter').setup {
+        install_dir = vim.fn.stdpath('data') .. '/site',
+      }
+      require('nvim-treesitter').install({ 'c_sharp', 'typescript', 'vue' }):wait(300000)
+    end,
   },
 
   -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
