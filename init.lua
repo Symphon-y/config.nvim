@@ -32,6 +32,16 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
+-- Load machine-local env vars from .env in the config directory.
+-- See README "Machine-local configuration" for available variables.
+local env_path = vim.fn.stdpath 'config' .. '/.env'
+if vim.fn.filereadable(env_path) == 1 then
+  for line in io.lines(env_path) do
+    local key, val = line:match '^([%w_]+)=(.+)$'
+    if key then vim.env[key] = val end
+  end
+end
+
 -- [[ Configure and install plugins ]]
 --
 --  To check the current status of your plugins, run
@@ -1024,7 +1034,7 @@ require('lazy').setup({
 }, {
   -- Where lazy.nvim looks for `dev = true` plugins. Defaults to ~/projects on
   -- POSIX which doesn't match Windows `~/Projects`, so set it explicitly.
-  dev = { path = vim.fn.expand '~/Projects' },
+  dev = { path = vim.env.NVIM_PROJECTS_DIR or vim.fn.expand '~/Projects' },
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
     -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table

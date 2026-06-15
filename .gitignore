@@ -12,3 +12,6 @@ spell/
 lazy-lock.json
 
 .DS_Store
+
+# Machine-local environment overrides — not committed
+.env

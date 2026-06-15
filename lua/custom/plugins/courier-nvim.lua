@@ -5,13 +5,12 @@
 
 ---@module 'lazy'
 ---@type LazySpec
+local dev = require 'custom.local_dev'
 return {
   {
     'Symphon-y/courier.nvim',
     name = 'courier-nvim',
-    -- Use the local working copy when ~/Projects/courier-nvim exists (dev
-    -- machine); otherwise lazy.nvim clones from GitHub on a fresh setup.
-    dev = vim.fn.isdirectory(vim.fn.expand '~/Projects/courier-nvim') == 1,
+    dir = dev.path 'courier-nvim',
     cmd = {
       'CourierStart',
       'CourierClose',

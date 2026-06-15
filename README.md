@@ -72,13 +72,13 @@ git clone https://github.com/symphon-y/config.nvim.git "${XDG_CONFIG_HOME:-$HOME
 If you're using `cmd.exe`:
 
 ```
-git clone https://github.com/nvim-lua/kickstart.nvim.git "%localappdata%\nvim"
+git clone https://github.com/nvim-lua/symphon-y.nvim.git "%localappdata%\nvim"
 ```
 
 If you're using `powershell.exe`
 
 ```
-git clone https://github.com/nvim-lua/kickstart.nvim.git "${env:LOCALAPPDATA}\nvim"
+git clone https://github.com/nvim-lua/symphon-y.nvim.git "${env:LOCALAPPDATA}\nvim"
 ```
 
 </details>
@@ -181,6 +181,32 @@ sudo apt update
 sudo apt install make gcc ripgrep unzip git xclip neovim
 ```
 </details>
+
+### Machine-local configuration
+
+Custom plugins (claude-nvim, courier-nvim, preview-nvim, gitdiff-nvim, cartograph-nvim) load
+from a local repo when it exists, and fall back to GitHub automatically when it doesn't.
+The base directory is controlled by `NVIM_PROJECTS_DIR` so it works across machines without
+editing any Lua files.
+
+**Setup on a new machine:**
+
+1. Copy `.env.example` to `.env` in the nvim config directory:
+   ```sh
+   cp ~/.config/nvim/.env.example ~/.config/nvim/.env
+   # Windows (PowerShell)
+   Copy-Item "$env:LOCALAPPDATA\nvim\.env.example" "$env:LOCALAPPDATA\nvim\.env"
+   ```
+
+2. Edit `.env` and set `NVIM_PROJECTS_DIR` to the directory where your local plugin
+   repos live:
+   ```sh
+   NVIM_PROJECTS_DIR=~/Projects
+   ```
+
+3. That's it. Plugins found under that path load from disk; absent ones pull from GitHub.
+
+`.env` is git-ignored — each machine has its own copy and it is never committed.
 
 #### Linux Install
 <details><summary>Ubuntu Install Steps</summary>

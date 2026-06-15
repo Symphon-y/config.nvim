@@ -1,10 +1,9 @@
+local dev = require 'custom.local_dev'
 return {
   {
     'Symphon-y/claude.nvim',
     name = 'claude-nvim',
-    -- Use the local working copy when ~/Projects/claude-nvim exists (dev
-    -- machine); otherwise lazy.nvim clones from GitHub on a fresh setup.
-    dev = vim.fn.isdirectory(vim.fn.expand('~/Projects/claude-nvim')) == 1,
+    dir = dev.path 'claude-nvim',
     cmd = {
       'ClaudeStart', 'ClaudeStop', 'ClaudeToggle', 'ClaudeStatus',
       'ClaudeReload', 'ClaudeLog', 'ClaudeLogClear',

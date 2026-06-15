@@ -1,8 +1,9 @@
+local dev = require 'custom.local_dev'
 return {
   {
     'Symphon-y/gitdiff.nvim',
     name = 'gitdiff-nvim',
-    dev = vim.fn.isdirectory(vim.fn.expand '~/Projects/gitdiff-nvim/') == 1,
+    dir = dev.path 'gitdiff-nvim',
     cmd = {
       'GitDiffStart',
       'GitDiffStop',
