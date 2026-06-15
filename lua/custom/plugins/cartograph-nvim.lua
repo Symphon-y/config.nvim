@@ -7,6 +7,7 @@ return {
     cmd = {
       'Cartograph',
       'CartographFromCursor',
+      'CartographRepo',
       'CartographEndpoint',
       'CartographCompare',
       'CartographSave',
@@ -15,6 +16,10 @@ return {
       'CartographClose',
     },
     keys = {},
+    keymaps = {
+      from_cursor = '<leader>cm',
+      compare = '<leader>cc',
+    },
     opts = {},
     config = function(_, opts) require('cartograph').setup(opts) end,
   },
