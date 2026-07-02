@@ -343,7 +343,7 @@ require('lazy').setup({
   { -- Fuzzy Finder (files, lsp, etc)
     'nvim-telescope/telescope.nvim',
     event = 'VimEnter',
-    branch = '0.1.x',
+    branch = 'master',
     dependencies = {
       'nvim-lua/plenary.nvim',
       { -- If encountering errors, see telescope-fzf-native README for installation instructions
@@ -1000,12 +1000,10 @@ require('lazy').setup({
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     branch = 'main',
-    build = function()
-      require('nvim-treesitter').update()
-    end,
+    build = function() require('nvim-treesitter').update() end,
     config = function()
-      if vim.fn.has('win32') == 1 then
-        local zigcc = vim.fn.stdpath('data') .. '\\zigcc.cmd'
+      if vim.fn.has 'win32' == 1 then
+        local zigcc = vim.fn.stdpath 'data' .. '\\zigcc.cmd'
         -- Always rewrite so the target remapping stays current.
         vim.fn.writefile({
           '@echo off',
@@ -1017,7 +1015,7 @@ require('lazy').setup({
         vim.env.CC = zigcc
       end
       require('nvim-treesitter').setup {
-        install_dir = vim.fn.stdpath('data') .. '/site',
+        install_dir = vim.fn.stdpath 'data' .. '/site',
       }
       require('nvim-treesitter').install({ 'c_sharp', 'typescript', 'vue' }):wait(300000)
     end,
