@@ -1002,6 +1002,18 @@ require('lazy').setup({
     branch = 'main',
     build = function() require('nvim-treesitter').update() end,
     config = function()
+      -- The `main` branch compiles each parser with the `tree-sitter` CLI.
+      -- If it's missing, bail with one clear message instead of a stack trace per parser.
+      if vim.fn.executable 'tree-sitter' == 0 then
+        vim.notify(
+          'nvim-treesitter (main): `tree-sitter` CLI not found on PATH.\n'
+            .. 'Install it, e.g. from https://github.com/tree-sitter/tree-sitter/releases\n'
+            .. '(WSL/Linux x64: drop `tree-sitter-linux-x64` into ~/.local/bin), then restart nvim.',
+          vim.log.levels.WARN,
+          { title = 'nvim-treesitter' }
+        )
+        return
+      end
       if vim.fn.has 'win32' == 1 then
         local zigcc = vim.fn.stdpath 'data' .. '\\zigcc.cmd'
         -- Always rewrite so the target remapping stays current.
